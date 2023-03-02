@@ -1,28 +1,35 @@
-const databaseConfigurations = require("./database/database-configuration.js")
-const mysql = require("mysql2");
 const express = require("express");
+const cors = require('cors');
+const mysql = require("mysql2");
+const databaseConfigurations = require("./database/database-configuration.js");
+const { json } = require("express");
 
 const app = express();
 
 //Porta de execucao do Server
-const port = 3000;      
+const port = 3002;      
 
 //Permite com que use JSON para I/O
-app.use(express.json())
+app.use(express.json());
+//Permite "Access-Control-Allow-Origin"
+app.use(cors());
 
 //Inicia o servidor
 app.listen(port, ()=>{
     console.log(`Listening server on port: ${port}`)
 });
 
+
+
 //#region /GET Endpoints
 
 app.get("/", (req, res) =>{
-    res.json( {"message": "Hellooo World"});
+    res.json( {message: "Hellooo World"});
+    console.log({message : "Haai"});
 })
 
 app.get("/bebidas", (req, res) =>{
-
+    let resultado;
     //Método recomendado abaixo
 
     /*  
@@ -45,15 +52,39 @@ app.get("/bebidas", (req, res) =>{
         database: databaseConfigurations.config.database
     });
 
-    connection.connect();
-
-    connection.query('SELECT * FROM bebidas', (error, result, fields) =>{
+    connection.query('SELECT nome FROM bebidas WHERE bebida_id = 1', (error, result, fields) =>{
         if(error) return console.log(error);
-        console.log(result)
+        console.log("Resultado Query: ")
+        console.log(result);
+        res.send(result);
+    });
+    
+    console.log("SQL END x");
+    return resultado;
+})
+
+
+app.get("/test", (req, res) =>{
+    let data = [{id: 1, nome: "Jose",}]
+    res.send(data);
+})
+
+app.get("/test2", (req, res) =>{
+    const connection = mysql.createConnection({
+        host: databaseConfigurations.config.host,
+        port: databaseConfigurations.config.port,
+        user: databaseConfigurations.config.user,
+        password: databaseConfigurations.config.password,
+        database: databaseConfigurations.config.database
     });
 
-    console.log("SQL END");
-    connection.end();
+    connection.query('SELECT nome FROM bebidas WHERE bebida_id = 10', (error, result, fields) =>{
+        if(error) return console.log(error);
+        console.log("[/test2] Resultado Query: ")
+        console.log(result);
+        res.send(result);
+    });
 })
+
 
 //#endregion

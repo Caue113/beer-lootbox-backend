@@ -1,6 +1,5 @@
 # Welcome // Readme
 
-
 ## Como iniciar o servidor
 
 Para rodar o servidor uma única vez, digite no terminal:
@@ -29,3 +28,11 @@ Após se conectar, acesse a  _scheme_ principal de desenvolvimento com:
 
 Para desenvolvimento de testes que podem ser destrutivos, utilize a _scheme_ de testes com:
 <code>USE testing_db</code>
+
+## To-Do
+
+- Adequar sistema de arquivos
+- Separar arquivos de consulta de banco de dados
+- Separar arquivos utilitários
+- Separar arquivos de configurações
+- Criar cada consulta para cada produto diferente
