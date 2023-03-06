@@ -1,21 +1,22 @@
-const database = "testing_db";
-
-
-const mysql = require("mysql2");
-const connection = mysql.createConnection({
+const testDB_config = {
     host: "localhost",
     port: 3306,
     user: "root",
     password: "12345",
-    database: database
-})
+    database: "testing_db"
+}
+
+
+
+const mysql = require("mysql2");
+const connection = mysql.createConnection(testDB_config);
 
 connection.connect((error) =>{
     if(error) return console.log(error)
-    console.log(`Connected to ${database} with Sucess!`);
+    console.log(`Connected to ${testDB_config.database} with Sucess!`);
     
     createTable("teste_usuarios");
-})
+});
 
 
 function createTable(name)
