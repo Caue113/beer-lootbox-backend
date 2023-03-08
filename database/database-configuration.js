@@ -1,6 +1,6 @@
 const mysql = require("mysql2");
 
-const config = {
+const TEST_CONFIG = {
     host: "localhost",
     user: "root",
     port: "3306",
@@ -10,11 +10,11 @@ const config = {
 
 function getConfig()
 {
-    return config;
+    return TEST_CONFIG;
 }
 
 module.exports = {
-    config : config,
+    TEST_CONFIG : TEST_CONFIG,
     getConfig : function(){
         getConfig();
     },

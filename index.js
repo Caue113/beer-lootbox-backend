@@ -45,11 +45,11 @@ app.get("/bebidas", (req, res) =>{
     //Método que futuramente usará diferentes usuários para acessar funcionalidaades
     //com restrições específicas
     const connection = mysql.createConnection({
-        host: databaseConfigurations.config.host,
-        port: databaseConfigurations.config.port,
-        user: databaseConfigurations.config.user,
-        password: databaseConfigurations.config.password,
-        database: databaseConfigurations.config.database
+        host: databaseConfigurations.TEST_CONFIG.host,
+        port: databaseConfigurations.TEST_CONFIG.port,
+        user: databaseConfigurations.TEST_CONFIG.user,
+        password: databaseConfigurations.TEST_CONFIG.password,
+        database: databaseConfigurations.TEST_CONFIG.database
     });
 
     connection.query('SELECT nome FROM bebidas WHERE bebida_id = 1', (error, result, fields) =>{
@@ -71,11 +71,11 @@ app.get("/test", (req, res) =>{
 
 app.get("/test2", (req, res) =>{
     const connection = mysql.createConnection({
-        host: databaseConfigurations.config.host,
-        port: databaseConfigurations.config.port,
-        user: databaseConfigurations.config.user,
-        password: databaseConfigurations.config.password,
-        database: databaseConfigurations.config.database
+        host: databaseConfigurations.TEST_CONFIG.host,
+        port: databaseConfigurations.TEST_CONFIG.port,
+        user: databaseConfigurations.TEST_CONFIG.user,
+        password: databaseConfigurations.TEST_CONFIG.password,
+        database: databaseConfigurations.TEST_CONFIG.database
     });
 
     connection.query('SELECT nome FROM bebidas WHERE bebida_id = 10', (error, result, fields) =>{
