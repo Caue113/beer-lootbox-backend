@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require('cors');
 const mysql = require("mysql2");
 const databaseConfigurations = require("./database/database-configuration.js");
-const { json } = require("express");
+const { json, response } = require("express");
 
 const app = express();
 
@@ -78,9 +78,36 @@ app.get("/test2", (req, res) =>{
         database: databaseConfigurations.TEST_CONFIG.database
     });
 
-    connection.query('SELECT nome FROM bebidas WHERE bebida_id = 10', (error, result, fields) =>{
+    connection.query('SELECT nome FROM bebidas WHERE bebida_id = 3', (error, result, fields) =>{
         if(error) return console.log(error);
         console.log("[/test2] Resultado Query: ")
+        console.log(result);
+        res.send(result);
+    });
+})
+
+
+//#endregion
+
+
+//#region POST endpoints
+
+app.get("/bebidas/1", (req, res) =>{
+
+    //const bebidaId = request.params.bebidaId;
+    const bebidaId = 1;
+
+    const connection = mysql.createConnection({
+        host: databaseConfigurations.TEST_CONFIG.host,
+        port: databaseConfigurations.TEST_CONFIG.port,
+        user: databaseConfigurations.TEST_CONFIG.user,
+        password: databaseConfigurations.TEST_CONFIG.password,
+        database: databaseConfigurations.TEST_CONFIG.database
+    });
+
+    connection.query(`SELECT nome FROM bebidas `, (error, result, fields) =>{
+        if(error) return console.log(error);
+        console.log("[/bebidas/id] Resultado Query: ")
         console.log(result);
         res.send(result);
     });
