@@ -30,17 +30,6 @@ app.get("/", (req, res) =>{
 
 app.get("/bebidas", (req, res) =>{
     let resultado;
-    //Método recomendado abaixo
-
-    /*  
-    const connection = mysql.createConnection({
-        host: "localhost",
-        port: "3306",
-        user: "root",
-        password: "12345",
-        database: "testing_db"
-    });
-    */
 
     //Método que futuramente usará diferentes usuários para acessar funcionalidaades
     //com restrições específicas
@@ -92,10 +81,12 @@ app.get("/test2", (req, res) =>{
 
 //#region POST endpoints
 
-app.get("/bebidas/1", (req, res) =>{
+app.get("/bebidas/bebida/:bebidaId", (req, res) =>{
 
-    //const bebidaId = request.params.bebidaId;
-    const bebidaId = 1;
+    const bebidaId = req.params.bebidaId;
+    const tempBebidaId = 1;
+
+    console.log(bebidaId);
 
     const connection = mysql.createConnection({
         host: databaseConfigurations.TEST_CONFIG.host,
@@ -105,7 +96,7 @@ app.get("/bebidas/1", (req, res) =>{
         database: databaseConfigurations.TEST_CONFIG.database
     });
 
-    connection.query(`SELECT nome FROM bebidas `, (error, result, fields) =>{
+    connection.query(`SELECT * FROM bebidas WHERE bebida_id = ${bebidaId}`, (error, result, fields) =>{
         if(error) return console.log(error);
         console.log("[/bebidas/id] Resultado Query: ")
         console.log(result);
