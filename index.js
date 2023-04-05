@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require('cors');
 const mysql = require("mysql2");
-const databaseConfigurations = require("./database/database-configuration.js");
 const { json, response } = require("express");
+const databaseConfiguration = require("./database/database-configuration.js");
 
 const app = express();
 
@@ -11,6 +11,7 @@ const port = 3002;
 
 //Permite com que use JSON para I/O
 app.use(express.json());
+
 //Permite "Access-Control-Allow-Origin"
 app.use(cors());
 
@@ -34,11 +35,11 @@ app.get("/bebidas", (req, res) =>{
     //Método que futuramente usará diferentes usuários para acessar funcionalidaades
     //com restrições específicas
     const connection = mysql.createConnection({
-        host: databaseConfigurations.TEST_CONFIG.host,
-        port: databaseConfigurations.TEST_CONFIG.port,
-        user: databaseConfigurations.TEST_CONFIG.user,
-        password: databaseConfigurations.TEST_CONFIG.password,
-        database: databaseConfigurations.TEST_CONFIG.database
+        host: databaseConfiguration.TEST_CONFIG.host,
+        port: databaseConfiguration.TEST_CONFIG.port,
+        user: databaseConfiguration.TEST_CONFIG.user,
+        password: databaseConfiguration.TEST_CONFIG.password,
+        database: databaseConfiguration.TEST_CONFIG.database
     });
 
     connection.query('SELECT nome FROM bebidas WHERE bebida_id = 1', (error, result, fields) =>{
@@ -50,24 +51,18 @@ app.get("/bebidas", (req, res) =>{
     
     console.log("SQL END x");
     return resultado;
-})
-
-
-app.get("/test", (req, res) =>{
-    let data = [{id: 1, nome: "Jose",}]
-    res.send(data);
-})
+});
 
 app.get("/test2", (req, res) =>{
     const connection = mysql.createConnection({
-        host: databaseConfigurations.TEST_CONFIG.host,
-        port: databaseConfigurations.TEST_CONFIG.port,
-        user: databaseConfigurations.TEST_CONFIG.user,
-        password: databaseConfigurations.TEST_CONFIG.password,
-        database: databaseConfigurations.TEST_CONFIG.database
+        host: databaseConfiguration.TEST_CONFIG.host,
+        port: databaseConfiguration.TEST_CONFIG.port,
+        user: databaseConfiguration.TEST_CONFIG.user,
+        password: databaseConfiguration.TEST_CONFIG.password,
+        database: databaseConfiguration.TEST_CONFIG.database
     });
 
-    connection.query('SELECT nome FROM bebidas WHERE bebida_id = 3', (error, result, fields) =>{
+    connection.query('SELECT * FROM bebidas', (error, result, fields) =>{
         if(error) return console.log(error);
         console.log("[/test2] Resultado Query: ")
         console.log(result);
@@ -81,22 +76,20 @@ app.get("/test2", (req, res) =>{
 
 //#region POST endpoints
 
-app.get("/bebidas/bebida/:bebidaId", (req, res) =>{
+app.get("/bebida/:bebidaId", (req, res) =>{
 
     const bebidaId = req.params.bebidaId;
-    const tempBebidaId = 1;
 
     console.log(bebidaId);
 
-    const connection = mysql.createConnection({
-        host: databaseConfigurations.TEST_CONFIG.host,
-        port: databaseConfigurations.TEST_CONFIG.port,
-        user: databaseConfigurations.TEST_CONFIG.user,
-        password: databaseConfigurations.TEST_CONFIG.password,
-        database: databaseConfigurations.TEST_CONFIG.database
-    });
+    const connection = mysql.createConnection(databaseConfiguration.DRINKHOUSE_CONFIG);
 
-    connection.query(`SELECT * FROM bebidas WHERE bebida_id = ${bebidaId}`, (error, result, fields) =>{
+    let sql = ` SELECT b.*, M.Marca from bebidas B
+                INNER JOIN marcas M
+                    ON B.MarcaID = M.ID
+                WHERE b.id = ${bebidaId}`
+
+    connection.query(sql, (error, result, fields) =>{
         if(error) return console.log(error);
         console.log("[/bebidas/id] Resultado Query: ")
         console.log(result);
