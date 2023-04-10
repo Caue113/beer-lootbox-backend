@@ -42,7 +42,7 @@ app.get("/bebidas", (req, res) =>{
         database: databaseConfiguration.TEST_CONFIG.database
     });
 
-    connection.query('SELECT nome FROM bebidas WHERE bebida_id = 1', (error, result, fields) =>{
+    connection.query('SELECT * FROM bebidas', (error, result, fields) =>{
         if(error) return console.log(error);
         console.log("Resultado Query: ")
         console.log(result);
