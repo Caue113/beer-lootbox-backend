@@ -80,7 +80,7 @@ app.get("/bebida/:bebidaId", (req, res) =>{
 
     const bebidaId = req.params.bebidaId;
 
-    console.log(bebidaId);
+    //console.log(bebidaId);
 
     const connection = mysql.createConnection(databaseConfiguration.DRINKHOUSE_CONFIG);
 
@@ -91,7 +91,26 @@ app.get("/bebida/:bebidaId", (req, res) =>{
 
     connection.query(sql, (error, result, fields) =>{
         if(error) return console.log(error);
-        console.log("[/bebidas/id] Resultado Query: ")
+        //console.log("[/bebidas/id] Resultado Query: ")
+        //console.log(result);
+        res.send(result);
+    });
+})
+
+app.get("/bebidas-relacionadas/", (req, res) =>{
+    let queryParams = req.query;
+    let relatedDrinks = queryParams.relatedDrinks.toString();
+
+    console.log(relatedDrinks)
+
+    const connection = mysql.createConnection(databaseConfiguration.DRINKHOUSE_CONFIG);
+
+    let sql = ` SELECT id as Id, NomeBebida, url_imagem FROM BEBIDAS 
+                WHERE ID IN(${relatedDrinks});`
+
+    connection.query(sql, (error, result, fields) =>{
+        if(error) return console.log(error);
+        console.log("[/bebidas-relacionadas/] Resultado Query: ")
         console.log(result);
         res.send(result);
     });
